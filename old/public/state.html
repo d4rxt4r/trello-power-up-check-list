@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://p.trellocdn.com/power-up.min.css" />
+    <script src="https://p.trellocdn.com/power-up.min.js"></script>
+</head>
+
+<body>
+    <style>
+        .flex {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .field-input {
+            width: 50%;
+            display: flex;
+            align-items: center;
+        }
+
+        .field-input label {
+            margin: 0;
+        }
+
+        .field-input input {
+            margin: 0 10px;
+        }
+    </style>
+
+    <div class="flex">
+        <div class="field-input">
+            <input type="checkbox" id="show_checkbox" />
+            <label>Show checklist</label>
+        </div>
+        <div class="field-input">
+            <input type="checkbox" id="show_all" />
+
+            <label>Show all items</label>
+        </div>
+    </div>
+
+    <script>
+        window.Promise = TrelloPowerUp.Promise;
+        var t = TrelloPowerUp.iframe();
+
+        t.get("card", "private", "vs").then(function (c) {
+            if (c) {
+                document.getElementById("show_checkbox").checked = true;
+            }
+        });
+
+        t.get("card", "private", "va").then(function (c) {
+            if (c) {
+                document.getElementById("show_all").checked = true;
+            }
+        });
+
+        document
+            .getElementById("show_checkbox")
+            .addEventListener("change", function () {
+                if (this.checked) {
+                    t.set("card", "private", "vs", true);
+                } else {
+                    t.set("card", "private", "vs", false);
+                }
+            });
+
+        document
+            .getElementById("show_all")
+            .addEventListener("change", function () {
+                if (this.checked) {
+                    t.set("card", "private", "va", true);
+                } else {
+                    t.set("card", "private", "va", false);
+                }
+            });
+    </script>
+</body>
+
+</html>

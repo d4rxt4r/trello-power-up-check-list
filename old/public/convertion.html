@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="https://p.trellocdn.com/power-up.min.css" />
+  </head>
+  <body>
+    <style>
+      .flex {
+        display: flex;
+        flex-direction: column;
+      }
+      .field-input {
+        width: 100%;
+        display: flex;
+        align-items: center;
+				margin-bottom: 10px;
+      }
+      .field-input label {
+        margin: 0 8px 0 0;
+      }
+      .field-input input {
+        margin: 0;
+      }
+    </style>
+
+    <div class="flex">
+      <div class="field-input">
+        <label>RUB:</label>
+        <input
+          type="number"
+          id="rub_input"
+          onchange="inputChange('RUB_USD', this.value);"
+          onpaste="this.onchange();"
+          oninput="this.onchange();"
+        />
+      </div>
+      <div class="field-input">
+        <label>USD:</label>
+        <input
+          type="number"
+          id="usd_input"
+          onchange="inputChange('USD_RUB', this.value);"
+          onpaste="this.onchange();"
+          oninput="this.onchange();"
+        />
+      </div>
+    </div>
+
+    <script>
+      const rub_input = document.getElementById("rub_input");
+      const usd_input = document.getElementById("usd_input");
+      const key = "66b4d1bea834c8445644";
+
+      function inputChange(direction, value) {
+        if (value == "") return false;
+        const api = `https://free.currconv.com/api/v7/convert?q=${direction}&compact=ultra&apiKey=${key}`;
+
+        fetch(api)
+          .then((data) => data.json())
+          .then((json) => {
+            conversion_value = parseInt(json[direction] * value);
+            if (direction == "RUB_USD") {
+              usd_input.value = conversion_value;
+            } else {
+              rub_input.value = conversion_value;
+            }
+          });
+      }
+    </script>
+  </body>
+</html>

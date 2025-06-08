@@ -1,0 +1,92 @@
+<!doctype html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://p.trellocdn.com/power-up.min.css" />
+    <script src="https://p.trellocdn.com/power-up.min.js"></script>
+</head>
+
+<body>
+    <style>
+        .flex {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .field-input {
+            width: 50%;
+            display: flex;
+            align-items: center;
+        }
+
+        .field-input label {
+            margin: 0;
+        }
+
+        .field-input input {
+            margin: 0 10px;
+        }
+
+        #vc_auth {
+            display: none;
+        }
+    </style>
+
+    <button id="vc_auth" type="button">Authorize</button>
+    <div id="vc_settings" class="flex">
+        <div class="field-input">
+            <input type="checkbox" id="show_checkbox" />
+            <label>Show checklist</label>
+        </div>
+        <div class="field-input">
+            <input type="checkbox" id="show_all" />
+
+            <label>Show all items</label>
+        </div>
+    </div>
+
+    <script type="module">
+        const t = TrelloPowerUp.iframe({
+            appKey: "885d304e9f94f998313493345cca08f2",
+            appName: "Visible Checklists",
+            appAuthor: "Saveliy Pivovarov",
+        });
+        const api = t.getRestApi();
+
+        const isAuthorized = await api.isAuthorized();
+        if (!isAuthorized) {
+            document.getElementById("vc_auth").style.display = "block";
+            document.getElementById("vc_settings").style.display = "none";
+            document.getElementById("vc_auth").addEventListener("click", function () {
+                api.authorize({ scope: "read" }).then(() => {
+                    window.reload();
+                }).catch(TrelloPowerUp.restApiError.AuthDeniedError, function () {
+                    alert("Cancelled!");
+                });
+            });
+        }
+
+        const isVisible = await t.get("card", "private", "visible_checklist");
+        if (isVisible) {
+            document.getElementById("show_checkbox").checked = true;
+        }
+        const isVisibleAll = await t.get("card", "private", "visible_all");
+        if (isVisibleAll) {
+            document.getElementById("show_all").checked = true;
+        }
+
+        document
+            .getElementById("show_checkbox")
+            .addEventListener("change", function (event) {
+                t.set("card", "private", "visible_checklist", event.target.checked);
+            });
+
+        document
+            .getElementById("show_all")
+            .addEventListener("change", function (event) {
+                t.set("card", "private", "visible_checklist", event.target.checked);
+            });
+    </script>
+</body>
+
+</html>

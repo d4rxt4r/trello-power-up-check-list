@@ -1,0 +1,1 @@
+A Trello Power-Up that allows you to show your checklist items on the cards.
