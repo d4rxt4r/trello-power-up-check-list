@@ -1,8 +1,4 @@
-const CHECKED_ICON =
-  "https://80577ad7-375e-4771-b570-5340dc0b1d4c-00-26xqhqnv1vpi2.pike.replit.dev/icons/cancel.svg";
-
-const CANCEL_ICON =
-  "https://80577ad7-375e-4771-b570-5340dc0b1d4c-00-26xqhqnv1vpi2.pike.replit.dev/icons/cancel.svg";
+const CHECKED_ICON = "../icons/checked.svg";
 
 const TRELLO_API = 'https://api.trello.com/1';
 
